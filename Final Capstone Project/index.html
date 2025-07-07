@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Mock Interview Coach</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    button, select, input {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    .output {
+      margin-top: 20px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 AI Mock Interview Coach</h1>
+  <label for="role">Select Role:</label>
+  <select id="role">
+    <option value="Software Engineer">Software Engineer</option>
+    <option value="Data Scientist">Data Scientist</option>
+    <option value="Cloud Engineer">Cloud Engineer</option>
+  </select><br/>
+
+  <button onclick="startInterview()">Start Interview</button>
+  <div class="output" id="output"></div>
+
+  <script>
+    async function startInterview() {
+      const role = document.getElementById('role').value;
+      document.getElementById('output').innerHTML = "⏳ Fetching question...";
+      const response = await fetch('/interview', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ role: role })
+      });
+      const data = await response.json();
+      document.getElementById('output').innerHTML = `
+        <strong>Question:</strong> ${data.question}<br/>
+        <strong>Answer:</strong> ${data.answer}<br/>
+        <strong>Feedback:</strong> ${data.feedback}
+      `;
+    }
+  </script>
+</body>
+</html>
